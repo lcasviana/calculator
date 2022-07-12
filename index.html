@@ -6,11 +6,52 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lotto & Bitcoin Calculator - Lucas Silvestre Viana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <input type="datetime-local" id="calc-datetime" name="calc-datetime" value="" />
-  <button type="button" id="calc-button"> Submit </button>
+  <main id="main">
+    <header id="header">
+      <h1> Lotto & Bitcoin </h1>
+      <!-- <h3> NEW </h3> -->
+    </header>
+    <aside id="aside" class="card">
+      <h2 class="card-title"> The Irish Lotto </h2>
+      <article class="card-content text">
+        <p> Since 16th April 1988, the Irish Lotto draw takes place every Saturday at 8pm. On 30th May 1990 an
+          additional Wednesday evening draw was introduced. </p>
+        <p> What would EUR 100 in winnings invested on a draw date be worth in Euro now? </p>
+        <p> Enter a date and time in the form to get the next draw date and time, with the current value of your
+          investment. </p>
+      </article>
+    </aside>
+    <section id="form" class="card">
+      <h2 class="card-title"> Enter a Date and Time </h2>
+      <form class="card-content form">
+        <input type="datetime-local" id="calc-datetime" name="calc-datetime" value="" />
+        <button type="button" id="calc-button"> SUBMIT </button>
+      </form>
+    </section>
+    <section id="table" class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <h4> DRAW DATE/TIME </h4>
+            </th>
+            <th>
+              <h4> YOUR BITCOIN'S VALUE </h4>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </section>
+  </main>
   <script src="script.js"></script>
 </body>
 

@@ -1,6 +1,7 @@
 (function () {
   const calcDatetimeEl = document.querySelector('#calc-datetime');
   const calcButtonEl = document.querySelector('#calc-button');
+  const tableBodyEl = document.querySelector('table tbody');
 
   /**
    * Transform Date into string (yyyy-MM-ddTHH:mm).
@@ -97,6 +98,26 @@
   }
 
   /**
+   * Insert values into table.
+   * @param {Date} lottoDraw Lotto draw date.
+   * @param {number} winnings Winning in euros.
+   * @returns
+   */
+  function insertIntoTable(lottoDraw, winnings) {
+    const date = toDatetimeString(lottoDraw).replace('T', ' ');
+    const value = `€${winnings.toFixed(2)}`;
+    const row = tableBodyEl.insertRow();
+    const dateCell = row.insertCell();
+    const valueCell = row.insertCell();
+    const dateCellText = document.createElement('p');
+    const valueCellText = document.createElement('p');
+    dateCellText.appendChild(document.createTextNode(date));
+    valueCellText.appendChild(document.createTextNode(value));
+    dateCell.appendChild(dateCellText);
+    valueCell.appendChild(valueCellText);
+  }
+
+  /**
    * Compute submit action.
    * @returns
    */
@@ -106,12 +127,7 @@
     const bitcoinEuroValueAtDate = await fetchBitcoinValueAtDate(nextLottoDraw);
     const bitcoinEuroValueCurrent = await fetchBitcoinValueCurrent();
     const winnings = calculateWinnings(bitcoinEuroValueAtDate, bitcoinEuroValueCurrent);
-    console.log(
-      toDateString(calcDatetime),
-      toDateString(nextLottoDraw),
-      bitcoinEuroValueAtDate?.toFixed(2),
-      bitcoinEuroValueCurrent?.toFixed(2),
-      winnings.toFixed(2));
+    insertIntoTable(nextLottoDraw, winnings);
   }
 
   /**
