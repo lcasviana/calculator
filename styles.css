@@ -81,6 +81,7 @@ html,
 body {
   background: var(--colors-gray-light);
   height: 100%;
+  overflow-x: hidden;
   width: 100%;
 }
 
@@ -304,6 +305,30 @@ td:last-child::before {
   }
 }
 
+@keyframes result-transition-failure {
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
 .success {
   animation: append-transition-success 1s linear;
 }
@@ -320,4 +345,26 @@ td:last-child::before {
 .failure:hover {
   background: var(--colors-state-failure);
   transition: background-color;
+}
+
+.shake {
+  animation: result-transition-failure 0.85s cubic-bezier(.36, .07, .19, .97) both;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+#coin {
+  bottom: 0;
+  height: 5rem;
+  left: calc(50% - 2.5rem);
+  opacity: 0;
+  position: absolute;
+  width: 5rem;
+}
+
+#coin.show {
+  bottom: calc(50% - 2.5rem);
+  opacity: 1;
+  transition: 1.5s ease;
 }

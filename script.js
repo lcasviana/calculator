@@ -1,4 +1,6 @@
 (function () {
+  const mainElement = document.querySelector('#main');
+  const coinElement = document.querySelector('#coin');
   const formElement = document.querySelector('#form form');
   const formInputElement = document.querySelector('#form-input');
   const formSubmitElement = document.querySelector('#form-submit');
@@ -118,8 +120,8 @@
 
   /**
    * Insert cell into row.
-   * @param {Element} row
-   * @param {string} value
+   * @param {Element} row Row element.
+   * @param {string} value Cell value.
    * @returns
    */
   function insertCellIntoRow(row, value) {
@@ -130,7 +132,7 @@
 
   /**
    * Insert row into table.
-   * @param {Element} table
+   * @param {Element} table Table element.
    * @param {Date} lottoDraw Lotto draw date.
    * @param {number} winnings Winnings in Euro (€).
    * @returns
@@ -142,6 +144,38 @@
     row.classList.add(winnings >= 100 ? 'success' : 'failure');
     insertCellIntoRow(row, date);
     insertCellIntoRow(row, value);
+  }
+
+  /**
+   * Insert into table.
+   * @param {Element} table Table element.
+   * @param {Date} lottoDraw Lotto draw date.
+   * @param {number} winnings Winnings in Euro (€).
+   * @returns
+   */
+  function insertIntoTable(table, lottoDraw, winnings) {
+    if (tableRowsCount === 0) table.innerHTML = '';
+    insertRowIntoTable(table, lottoDraw, winnings);
+    tableRowsCount++;
+  }
+
+  /**
+   * Set animation depending on result.
+   * @param {boolean} success
+   * @returns
+   */
+  function setAnimation(success) {
+    if (success) {
+      coinElement.classList.add('show');
+      setTimeout(function () {
+        coinElement.classList.remove('show');
+      }, 1_500);
+    } else {
+      mainElement.classList.add('shake');
+      setTimeout(function () {
+        mainElement.classList.remove('shake');
+      }, 850);
+    }
   }
 
   /**
@@ -158,8 +192,7 @@
     const bitcoinEuroValueAtDate = await fetchBitcoinValueAtDate(nextLottoDrawDate);
     const bitcoinEuroValueCurrent = await fetchBitcoinValueCurrent();
     const winnings = calculateWinnings(bitcoinEuroValueAtDate, bitcoinEuroValueCurrent);
-    if (tableRowsCount === 0) tableBodyElement.innerHTML = '';
-    insertRowIntoTable(tableBodyElement, nextLottoDrawDate, winnings);
-    tableRowsCount++;
+    insertIntoTable(tableBodyElement, nextLottoDrawDate, winnings);
+    setAnimation(winnings >= 100);
   }
 })();
