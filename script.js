@@ -1,4 +1,5 @@
 (function () {
+  let rows = 0;
   const calcDatetimeEl = document.querySelector('#calc-datetime');
   const calcButtonEl = document.querySelector('#calc-button');
   const tableBodyEl = document.querySelector('table tbody');
@@ -27,6 +28,20 @@
     const month = ('0' + (datetime.getMonth() + 1)).slice(-2);
     const day = ('0' + datetime.getDate()).slice(-2);
     return `${day}-${month}-${year}`;
+  }
+
+  /**
+   * Transform Date into locale string (dd-MM-yyyy HH:mm).
+   * @param {Date} datetime
+   * @returns {string} 
+   */
+  function toLocaleString(datetime) {
+    const year = datetime.getFullYear().toString();
+    const month = ('0' + (datetime.getMonth() + 1)).slice(-2);
+    const day = ('0' + datetime.getDate()).slice(-2);
+    const hours = ('0' + datetime.getHours()).slice(-2);
+    const minutes = ('0' + datetime.getMinutes()).slice(-2);
+    return `${day}-${month}-${year} ${hours}:${minutes}`;
   }
 
   /**
@@ -104,9 +119,13 @@
    * @returns
    */
   function insertIntoTable(lottoDraw, winnings) {
-    const date = toDatetimeString(lottoDraw).replace('T', ' ');
+    if (rows === 0) {
+      tableBodyEl.innerHTML = '';
+    }
+    const date = toLocaleString(lottoDraw);
     const value = `€${winnings.toFixed(2)}`;
     const row = tableBodyEl.insertRow();
+    row.classList.add(winnings >= 100 ? 'success' : 'fail');
     const dateCell = row.insertCell();
     const valueCell = row.insertCell();
     const dateCellText = document.createElement('p');
@@ -115,6 +134,7 @@
     valueCellText.appendChild(document.createTextNode(value));
     dateCell.appendChild(dateCellText);
     valueCell.appendChild(valueCellText);
+    rows++;
   }
 
   /**

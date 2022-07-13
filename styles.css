@@ -8,8 +8,31 @@
   --font-light-color: #FFFFFF;
   --font-size: 16px;
   --input-border-color: #C8D6D9;
+  --input-hover-color: #E1E1E1;
+  --table-fail-color: #B71C1C;
   --table-row-color: #191919;
+  --table-success-color: #1B5E20;
   --shadow-color: #00000059;
+}
+
+@keyframes append-transition-success {
+  from {
+    background: var(--table-success-color);
+  }
+
+  to {
+    background: var(--table-row-color);
+  }
+}
+
+@keyframes append-transition-fail {
+  from {
+    background: var(--table-fail-color);
+  }
+
+  to {
+    background: var(--table-row-color);
+  }
 }
 
 * {
@@ -20,6 +43,7 @@
   font-weight: 400;
   margin: 0;
   padding: 0;
+  transition: all ease-in-out 300ms;
 }
 
 ::selection {
@@ -86,6 +110,7 @@ input {
 
 input:hover {
   cursor: text;
+  background: var(--input-hover-color);
 }
 
 button,
@@ -94,6 +119,8 @@ input {
 }
 
 table {
+  border: 0.0625rem solid var(--container-top-color);
+  border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
 }
@@ -102,19 +129,21 @@ thead {
   background: var(--container-top-color);
 }
 
-tbody {
-  background: var(--table-row-color);
+tr {
+  border: 0.0625rem solid var(--container-top-color);
+  height: 2.5rem;
 }
 
-tr {
-  height: 2.5rem;
+tbody tr {
+  background: var(--table-row-color);
 }
 
 th,
 td {
-  text-align: left;
   padding: 0 0.625rem;
-  width: 9rem;
+  text-align: left;
+  width: 8.75rem;
+  position: relative;
 }
 
 th+th,
@@ -122,30 +151,45 @@ td+td {
   width: auto;
 }
 
+td:last-child::before {
+  border-left: 0.0625rem solid var(--container-top-color);
+  bottom: 0.5rem;
+  content: "";
+  left: 0;
+  position: absolute;
+  top: 0.5rem;
+  width: 0.0625rem;
+}
+
 #header {
   align-items: center;
   background: var(--container-top-color);
   display: flex;
   grid-area: header;
+  margin-bottom: 0.3125rem;
+  overflow: hidden;
   padding: 0 1.875rem;
+  position: relative;
 }
 
 #aside {
   grid-area: aside;
+  margin: 0.3125rem;
 }
 
 #form {
   grid-area: form;
+  margin: 0.3125rem;
 }
 
 #table {
   grid-area: table;
+  margin: 0.3125rem;
 }
 
 #main {
   align-content: start;
   display: grid;
-  gap: 0.625rem;
   grid-template: 6.25rem repeat(3, auto) / 1fr;
   grid-template-areas:
     "header"
@@ -160,7 +204,7 @@ td+td {
 
 @media (min-width: 600px) {
   #main {
-    grid-template: 6.25rem 10rem minmax(25.625rem, 1fr) / minmax(auto, 18.125rem) 1fr;
+    grid-template: 6.25rem 10rem minmax(14.75rem, auto) / minmax(auto, 18.125rem) 1fr;
     grid-template-areas:
       "header header"
       "aside form"
@@ -196,4 +240,40 @@ td+td {
   flex-flow: row wrap;
   gap: 1rem;
   height: calc(100% - 2.5rem);
+}
+
+.success {
+  animation: append-transition-success 1s linear;
+}
+
+.fail {
+  animation: append-transition-fail 1s linear;
+}
+
+.success:hover {
+  background: var(--table-success-color);
+  transition: background-color;
+}
+
+.fail:hover {
+  background: var(--table-fail-color);
+  transition: background-color;
+}
+
+.ribbon {
+  background: var(--accent-color);
+  display: flex;
+  flex-flow: column;
+  height: 1.75rem;
+  justify-content: center;
+  position: absolute;
+  right: -3rem;
+  text-align: center;
+  top: 1rem;
+  transform: rotate(45deg);
+  width: 10rem;
+}
+
+.transparent {
+  background: transparent;
 }
