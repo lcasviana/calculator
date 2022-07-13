@@ -30,7 +30,7 @@
 
   --input-border-color: #C8D6D9;
   --input-height: 2.25rem;
-  --input-hover-color: #E1E1E1;
+  --input-hover-color: #E0E0E0;
   --input-width: 16.25rem;
 
   --layout-normal-areas:
@@ -122,6 +122,12 @@ input {
 input:hover {
   background: var(--input-hover-color);
   cursor: text;
+}
+
+input:invalid {
+  background: var(--colors-state-failure);
+  border: var(--border-size) solid var(--colors-state-failure);
+  color: var(--font-color-light);
 }
 
 button {

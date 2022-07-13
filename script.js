@@ -1,4 +1,5 @@
 (function () {
+  const formElement = document.querySelector('#form form');
   const formInputElement = document.querySelector('#form-input');
   const formSubmitElement = document.querySelector('#form-submit');
   const tableBodyElement = document.querySelector('#table-body');
@@ -149,6 +150,10 @@
    */
   async function computeInvestment() {
     const formInputValue = new Date(formInputElement.value);
+    if (isNaN(formInputValue.getTime())) {
+      formElement.reportValidity();
+      return;
+    };
     const nextLottoDrawDate = getNextLottoDraw(formInputValue);
     const bitcoinEuroValueAtDate = await fetchBitcoinValueAtDate(nextLottoDrawDate);
     const bitcoinEuroValueCurrent = await fetchBitcoinValueCurrent();
