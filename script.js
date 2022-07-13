@@ -1,8 +1,11 @@
 (function () {
-  let rows = 0;
-  const calcDatetimeEl = document.querySelector('#calc-datetime');
-  const calcButtonEl = document.querySelector('#calc-button');
-  const tableBodyEl = document.querySelector('table tbody');
+  const formInputElement = document.querySelector('#form-input');
+  const formSubmitElement = document.querySelector('#form-submit');
+  const tableBodyElement = document.querySelector('#table-body');
+  let tableRowsCount = 0;
+
+  formInputElement.value = toDatetimeString(new Date());
+  formSubmitElement.addEventListener('click', computeInvestment);
 
   /**
    * Transform Date into string (yyyy-MM-ddTHH:mm).
@@ -113,51 +116,45 @@
   }
 
   /**
-   * Insert values into table.
-   * @param {Date} lottoDraw Lotto draw date.
-   * @param {number} winnings Winning in euros.
+   * Insert cell into row.
+   * @param {Element} row
+   * @param {string} value
    * @returns
    */
-  function insertIntoTable(lottoDraw, winnings) {
-    if (rows === 0) {
-      tableBodyEl.innerHTML = '';
-    }
-    const date = toLocaleString(lottoDraw);
-    const value = `€${winnings.toFixed(2)}`;
-    const row = tableBodyEl.insertRow();
-    row.classList.add(winnings >= 100 ? 'success' : 'fail');
-    const dateCell = row.insertCell();
-    const valueCell = row.insertCell();
-    const dateCellText = document.createElement('p');
-    const valueCellText = document.createElement('p');
-    dateCellText.appendChild(document.createTextNode(date));
-    valueCellText.appendChild(document.createTextNode(value));
-    dateCell.appendChild(dateCellText);
-    valueCell.appendChild(valueCellText);
-    rows++;
+  function insertCellIntoRow(row, value) {
+    const cell = row.insertCell(), paragraph = document.createElement('p');
+    paragraph.appendChild(document.createTextNode(value));
+    cell.appendChild(paragraph);
   }
 
   /**
-   * Compute submit action.
+   * Insert row into table.
+   * @param {Element} table
+   * @param {Date} lottoDraw Lotto draw date.
+   * @param {number} winnings Winnings in Euro (€).
    * @returns
    */
-  async function submitAction() {
-    const calcDatetime = new Date(calcDatetimeEl.value);
-    const nextLottoDraw = getNextLottoDraw(calcDatetime);
-    const bitcoinEuroValueAtDate = await fetchBitcoinValueAtDate(nextLottoDraw);
+  function insertRowIntoTable(table, lottoDraw, winnings) {
+    const date = toLocaleString(lottoDraw), value = `€${winnings.toFixed(2)}`;
+    /** @type {Element} */
+    const row = table.insertRow();
+    row.classList.add(winnings >= 100 ? 'success' : 'failure');
+    insertCellIntoRow(row, date);
+    insertCellIntoRow(row, value);
+  }
+
+  /**
+   * Compute investment.
+   * @returns
+   */
+  async function computeInvestment() {
+    const formInputValue = new Date(formInputElement.value);
+    const nextLottoDrawDate = getNextLottoDraw(formInputValue);
+    const bitcoinEuroValueAtDate = await fetchBitcoinValueAtDate(nextLottoDrawDate);
     const bitcoinEuroValueCurrent = await fetchBitcoinValueCurrent();
     const winnings = calculateWinnings(bitcoinEuroValueAtDate, bitcoinEuroValueCurrent);
-    insertIntoTable(nextLottoDraw, winnings);
+    if (tableRowsCount === 0) tableBodyElement.innerHTML = '';
+    insertRowIntoTable(tableBodyElement, nextLottoDrawDate, winnings);
+    tableRowsCount++;
   }
-
-  /**
-   * Initialize variables.
-   * @returns
-   */
-  function initializeVariables() {
-    calcDatetimeEl.value = toDatetimeString(new Date());
-    calcButtonEl.addEventListener('click', submitAction);
-  }
-
-  initializeVariables();
 })();

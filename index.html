@@ -16,11 +16,11 @@
   <main id="main">
     <header id="header">
       <h1> Lotto & Bitcoin </h1>
-      <h3 class="ribbon"> NEW </h3>
+      <h3 id="header-ribbon"> NEW </h3>
     </header>
     <aside id="aside" class="card">
       <h2 class="card-title"> The Irish Lotto </h2>
-      <article class="card-content text">
+      <article class="card-content">
         <p> Since 16th April 1988, the Irish Lotto draw takes place every Saturday at 8pm. On 30th May 1990 an
           additional Wednesday evening draw was introduced. </p>
         <p> What would EUR 100 in winnings invested on a draw date be worth in Euro now? </p>
@@ -30,9 +30,9 @@
     </aside>
     <section id="form" class="card">
       <h2 class="card-title"> Enter a Date and Time </h2>
-      <form class="card-content form">
-        <input type="datetime-local" id="calc-datetime" name="calc-datetime" value="" />
-        <button type="button" id="calc-button"> SUBMIT </button>
+      <form class="card-content">
+        <input type="datetime-local" id="form-input" name="form-input" value="" />
+        <button type="button" id="form-submit"> SUBMIT </button>
       </form>
     </section>
     <section id="table" class="card">
@@ -47,7 +47,7 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="table-body">
           <tr class="transparent">
             <td></td>
             <td></td>
